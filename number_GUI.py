@@ -50,6 +50,10 @@ class NumberGuessingGame:
     def play_click_sound(self):
         CLICK_SOUND.play()  # Play the click sound whenever a button is pressed
 
+    def exit_to_welcome(self):
+        self.play_click_sound()  # Play click sound before going back to the welcome screen
+        self.setup_welcome_screen()  # Go back to the welcome screen
+
     def setup_welcome_screen(self):
         self.clear_screen()
         self.welcome_frame = tk.Frame(self.root, bg="lightyellow")
@@ -61,6 +65,9 @@ class NumberGuessingGame:
         self.name_entry.pack(pady=5)
 
         tk.Button(self.welcome_frame, text="Start Game", command=self.start_game_setup).pack(pady=10)
+        
+        # Add an Exit button to close the game
+        tk.Button(self.welcome_frame, text="Exit", command=self.root.quit).pack(pady=10)
 
     def start_game_setup(self):
         self.play_click_sound()  # Play click sound when the "Start Game" button is clicked
@@ -80,6 +87,9 @@ class NumberGuessingGame:
         tk.Button(self.difficulty_frame, text="Medium (1-100)", command=lambda: self.start_game("medium", 1, 100, 10)).pack(pady=5)
         tk.Button(self.difficulty_frame, text="Hard (1-500)", command=lambda: self.start_game("hard", 1, 500, 5)).pack(pady=5)
         tk.Button(self.difficulty_frame, text="View Leaderboard", command=self.show_leaderboard).pack(pady=10)
+        
+        # Add an Exit button to go back to the welcome screen
+        tk.Button(self.difficulty_frame, text="Exit to Main Menu", command=self.exit_to_welcome).pack(pady=10)
 
     def start_game(self, difficulty, min_number, max_number, max_attempts):
         self.play_click_sound()  # Play click sound when a difficulty button is clicked
@@ -90,6 +100,7 @@ class NumberGuessingGame:
         self.secret_number = random.randint(min_number, max_number)
         self.attempts = 0
         self.start_time = time.time()
+        self.time_left = 60  # Reset the timer to 60 seconds
         self.wrong_guesses = []  # Reset wrong guesses at the start of a new game
 
         self.setup_game_screen()
@@ -117,6 +128,9 @@ class NumberGuessingGame:
 
         self.wrong_guesses_label = tk.Label(self.game_frame, text="Wrong Guesses: None", font=("Arial", 12), fg="red", bg="lightyellow")
         self.wrong_guesses_label.pack(pady=10)
+        
+        # Add an Exit button to go back to the welcome screen
+        tk.Button(self.game_frame, text="Exit to Main Menu", command=self.exit_to_welcome).pack(pady=10)
 
         self.update_timer()
 
